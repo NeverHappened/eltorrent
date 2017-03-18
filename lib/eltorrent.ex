@@ -1,18 +1,12 @@
 defmodule Eltorrent do
-  @moduledoc """
-  Documentation for Eltorrent.
-  """
+  use Application
 
-  @doc """
-  Hello world.
+  require Logger
 
-  ## Examples
+  alias Eltorrent.ClientSupervisor
 
-      iex> Eltorrent.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, _args) do
+    Logger.info "Starting Client..."
+    ClientSupervisor.start_link
   end
 end
