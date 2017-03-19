@@ -1,3 +1,5 @@
+require IEx
+
 defmodule Eltorrent.TorrentParser do
 
   alias Eltorrent.TorrentInfo
@@ -12,11 +14,14 @@ defmodule Eltorrent.TorrentParser do
     |> Bento.decode()
 
     case get_data do
-      {:ok, data} -> %TorrentInfo{
-        announces: parse_announces(data), 
-        files: parse_files(data), 
-        pieces: parse_pieces(data)
-      }
+      {:ok, data} -> 
+        all_pieces = parse_pieces(data)
+        
+        %TorrentInfo{
+          announces: parse_announces(data), 
+          files: parse_files(data, all_pieces), 
+          pieces: all_pieces,
+        }
       _ -> nil
     end
   end
@@ -29,39 +34,44 @@ defmodule Eltorrent.TorrentParser do
     case list_data do
       nil -> []
       xs -> xs
-      _ -> []
     end
   end
 
-  defp parse_files(data) do
+  defp parse_files(data, all_pieces) do
     files_data = data["info"]["files"]
-    
-    # piece_length_in_bytes = data["info"]["piece length"]
-    
-    # todo: consider case with only one file
+    file_bytes_in_piece = data["info"]["piece length"]
+    file_byte_points = [0] ++ Enum.scan(files_data, 0, &(&1["length"] + &2))
 
-    Enum.with_index(files_data)
-    |> Enum.map(fn file_with_index -> parse_file(file_with_index, pieces_list(data)) end)
+    Enum.zip(files_data, file_byte_points)
+    |> Enum.map(fn {file, file_byte_start} -> 
+      parse_file(file, file_byte_start, all_pieces, file_bytes_in_piece)
+    end)
   end
 
-  defp parse_file({file, index}, pieces_list) do
-    # todo: do we need to store index either?
-    %TorrentFile{
+  defp parse_file(file, file_byte_start, all_pieces, file_bytes_in_piece) do
+    file_length_in_bytes = file["length"]
+    file_byte_end = file_byte_start + file_length_in_bytes
+
+    file = %TorrentFile{
       path: file["path"], 
-      length_in_bytes: file["length"], 
-      pieces: TorrentPieces.get_sha_pieces(pieces_list, index)
+      length_in_bytes: file_length_in_bytes,
+      file_byte_start: file_byte_start,
+      file_byte_end: file_byte_end,
+      pieces: TorrentPieces.get_all_sha_pieces_for_file(all_pieces, file_byte_start, file_byte_end, file_bytes_in_piece),
     }
+
+    file
   end
 
   defp parse_pieces(data) do
-    TorrentPieces.get_all_sha_pieces_simple(files_length(data), pieces_list(data))
+    TorrentPieces.get_all_sha_pieces_simple(pieces_bytes_list(data))
   end
 
-  defp pieces_list(data) do
+  defp pieces_bytes_list(data) do
     :binary.bin_to_list(data["info"]["pieces"])
   end
 
-  defp files_length(data) do
-    length(data["info"]["files"])
-  end
+  # defp files_length(data) do
+  #   length(data["info"]["files"])
+  # end
 end
