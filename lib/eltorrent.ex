@@ -7,6 +7,7 @@ defmodule Eltorrent do
 
   def start(_type, _args) do
     Logger.info "Starting Client..."
+    
     ClientSupervisor.start_link
   end
 end

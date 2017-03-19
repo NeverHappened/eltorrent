@@ -10,14 +10,9 @@ defmodule Eltorrent.Mixfile do
      deps: deps()]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
-    # Specify extra applications you'll use from Erlang/Elixir
-    [
-      mod: {Eltorrent, []},
-      extra_applications: [:logger]]
+    [mod: {Eltorrent, []},
+     extra_applications: [:logger]]
   end
 
   defp deps do
