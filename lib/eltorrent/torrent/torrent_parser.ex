@@ -21,6 +21,7 @@ defmodule Eltorrent.TorrentParser do
           announces: parse_announces(data), 
           files: parse_files(data, all_pieces), 
           pieces: all_pieces,
+          info_sha1: info_sha1(data),
         }
       _ -> nil
     end
@@ -74,4 +75,10 @@ defmodule Eltorrent.TorrentParser do
   # defp files_length(data) do
   #   length(data["info"]["files"])
   # end
+
+  defp info_sha1(data) do
+    {:ok, info} = data["info"] |> Bento.encode()
+    to_encrypt = :binary.bin_to_list(info)
+    :crypto.hash(:sha, to_encrypt)
+  end
 end
