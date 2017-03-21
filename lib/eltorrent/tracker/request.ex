@@ -12,24 +12,19 @@ defmodule Eltorrent.Tracker.Request do
       info_hash: torrent.info_sha1,
       peer_id: peer_id,
       port: "6887", # 6881 - 6889
-      uploaded: "0",
+      uploaded: "0"   ,
       downloaded: "0",
-      left: "0", # todo
-      # event: "started",
+      left: "100004", # todo
+      event: "started",
     }
   end
 
   def construct_request_params(request_model) do
-    result = Enum.map(request_model, fn key_value -> param_value_encode(key_value) end)
-    |> Enum.join("&")
-    
-    "?" <> result
+    "?" <> URI.encode_query(request_model)
   end
 
   def construct_request(request_params, torrent) do
-    # [announce | tail] = torrent.announces
-    # announce <> request_params
-    List.last(torrent.announces) <> request_params
+    List.first(torrent.announces) <> request_params
   end
 
   defp param_value_encode({key, value}) do
