@@ -26,6 +26,12 @@ defmodule Eltorrent.Tracker.Request do
     "?" <> result
   end
 
+  def construct_request(request_params, torrent) do
+    # [announce | tail] = torrent.announces
+    # announce <> request_params
+    List.last(torrent.announces) <> request_params
+  end
+
   defp param_value_encode({key, value}) do
     # todo: proper encoding of info_hash!
     "#{key}=#{URI.encode(value)}"

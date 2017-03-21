@@ -12,6 +12,7 @@ defmodule Eltorrent.ClientSupervisor do
       worker(Client, [Client])
     ]
 
+    #  GenServer.call(Eltorrent.Client, :start, 50000)
     supervise(children, strategy: :one_for_one)
   end
 end

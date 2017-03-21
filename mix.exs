@@ -16,6 +16,7 @@ defmodule Eltorrent.Mixfile do
   end
 
   defp deps do
-    [{:bento, "0.9.2"}]
+    [{:bento, "0.9.2"},
+     {:tesla, "~> 0.6.0"}]
   end
 end

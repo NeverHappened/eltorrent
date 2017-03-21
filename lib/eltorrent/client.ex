@@ -19,21 +19,27 @@ defmodule Eltorrent.Client do
       nil -> nil
       path -> TorrentParser.parse(path)
     end
-    # todo: move this stuff into its own handle_call
     peer_id = random_binary_string()
-    request = Request.construct_request_model(peer_id, torrent) |> Request.construct_request_params()
-    IEx.pry
+    new_state = Map.put(state, :torrent, torrent) |> Map.put(:peer_id, peer_id)
     Logger.info "Starting Client with path '#{torrent_file_path}'"
+    {:ok, new_state}
+  end
+
+  def handle_call(:start, _from, %{peer_id: peer_id, torrent: torrent}) do
+    # todo: move this stuff into its own handle_call
+    request = Request.construct_request_model(peer_id, torrent) 
+    |> Request.construct_request_params() 
+    |> Request.construct_request(torrent)
+
+    response = Tesla.get(request)
+
+    IEx.pry
 
     # todo: save peer_id in state
-
-    {:ok, %{state | torrent: torrent}}
   end
 
   defp random_binary_string do
     :crypto.strong_rand_bytes(20) |> Base.url_encode64 |> binary_part(0, 20)
   end
-
-  # todo: start of seeding/peering of torrent
 
 end

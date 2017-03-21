@@ -28,7 +28,9 @@ defmodule Eltorrent.TorrentParser do
   end
 
   defp parse_announces(data) do
-    Enum.uniq([data["announce"]] ++ announces_list(data["announce-list"]))
+    ([data["announce"]] ++ announces_list(data["announce-list"]))
+    |> List.flatten()
+    |> Enum.uniq()
   end
 
   defp announces_list(list_data) do

@@ -3,4 +3,5 @@
   "earmark": {:hex, :earmark, "0.2.1", "ba6d26ceb16106d069b289df66751734802777a3cbb6787026dd800ffeb850f3", [:mix], []},
   "eqc_ex": {:hex, :eqc_ex, "1.2.4", "c169c4025e6f59d95977b1d5f3846cd964e996449755d7e9bf6ac6d3a4520839", [:mix], []},
   "parse_torrent": {:hex, :parse_torrent, "0.2.0", "9db41b3a7b201d6466ca44ac3c791bd8f010ab9c530e55d251cff609e6051cac", [:mix], [{:bencode, "0.3.0", [hex: :bencode, optional: false]}, {:earmark, "0.2.1", [hex: :earmark, optional: false]}]},
-  "poison": {:hex, :poison, "2.2.0", "4763b69a8a77bd77d26f477d196428b741261a761257ff1cf92753a0d4d24a63", [:mix], []}}
+  "poison": {:hex, :poison, "2.2.0", "4763b69a8a77bd77d26f477d196428b741261a761257ff1cf92753a0d4d24a63", [:mix], []},
+  "tesla": {:hex, :tesla, "0.6.0", "ede6f50c4f7d57d6787c313c30279b1d7176c362cd6f39993166375f540ec368", [:mix], [{:exjsx, ">= 0.1.0", [hex: :exjsx, optional: true]}, {:fuse, "~> 2.4", [hex: :fuse, optional: true]}, {:hackney, "~> 1.6.0", [hex: :hackney, optional: true]}, {:ibrowse, "~> 4.2", [hex: :ibrowse, optional: true]}, {:poison, ">= 1.0.0", [hex: :poison, optional: true]}]}}
