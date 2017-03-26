@@ -1,3 +1,3 @@
 defmodule Eltorrent.Tracker.Peer do
-  defstruct [:peer_id, :id, :port]
+  defstruct [:ip, :port]
 end

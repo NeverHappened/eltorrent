@@ -20,7 +20,7 @@ defmodule Eltorrent.Tracker.Request do
   end
 
   def construct_request_params(request_model) do
-    "?" <> URI.encode_query(request_model)
+    "&" <> URI.encode_query(request_model)
   end
 
   def construct_request(request_params, torrent) do
