@@ -24,7 +24,15 @@ defmodule Eltorrent.Tracker.Request do
   end
 
   def construct_request(request_params, torrent) do
-    List.first(torrent.announces) <> request_params
+    List.first(torrent.announces) <> find_delimiter(request_params) <> request_params
+  end
+
+  def find_delimiter(request_params) do
+    if String.contains?(request_params, "?") do
+      "&"
+    else
+      "?"
+    end
   end
 
   defp param_value_encode({key, value}) do

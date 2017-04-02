@@ -2,6 +2,7 @@ defmodule Eltorrent.ClientSupervisor do
   use Supervisor
 
   alias Eltorrent.Client
+  alias Eltorrent.Torrent.Parser
 
   def start_link do
     Supervisor.start_link(__MODULE__, :ok)
@@ -9,10 +10,17 @@ defmodule Eltorrent.ClientSupervisor do
 
   def init(:ok) do
     children = [
-      worker(Client, [Client])
+      worker(Client, start_params)
     ]
 
-    #  GenServer.call(Eltorrent.Client, :start, 50000)
     supervise(children, strategy: :one_for_one)
   end
+
+  defp start_params do
+    peer_id = Application.get_env(:eltorrent, :peer_id)
+    torrent = Application.get_env(:eltorrent, :torrent_file) |> Parser.parse()
+    
+    [%{torrent: torrent, peer_id: peer_id}, Client]
+  end
+  
 end

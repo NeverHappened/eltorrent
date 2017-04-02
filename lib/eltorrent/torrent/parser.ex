@@ -1,6 +1,4 @@
-require IEx
-
-defmodule Eltorrent.TorrentParser do
+defmodule Eltorrent.Torrent.Parser do
 
   alias Eltorrent.TorrentInfo
   alias Eltorrent.TorrentFile

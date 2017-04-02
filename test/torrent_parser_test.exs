@@ -4,6 +4,7 @@ defmodule TorrentParserTest do
   doctest Eltorrent
 
   test "it gets the data" do
-    data = Eltorrent.TorrentParser.parse("~/Downloads/test2.torrent")
+    data = Eltorrent.Torrent.Parser.parse("~/Downloads/test2.torrent")
+     # GenServer.call(Eltorrent.Client, :sync_with_tracker, 100000)
   end
 end
