@@ -19,8 +19,9 @@ defmodule Eltorrent.ClientSupervisor do
   defp start_params do
     peer_id = Application.get_env(:eltorrent, :peer_id)
     torrent = Application.get_env(:eltorrent, :torrent_file) |> Parser.parse()
+    port = Application.get_env(:eltorrent, :port)
     
-    [%{torrent: torrent, peer_id: peer_id}, Client]
+    [%{torrent: torrent, peer_id: peer_id, port: port}, Client]
   end
   
 end

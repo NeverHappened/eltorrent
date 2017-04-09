@@ -3,8 +3,8 @@ defmodule Eltorrent.Tracker.Sync do
   alias Eltorrent.Tracker.Request
   alias Eltorrent.Tracker.Response
 
-  def sync(%{peer_id: peer_id, torrent: torrent}) do
-    request_uri = Request.construct_request_model(peer_id, torrent) 
+  def sync(%{peer_id: peer_id, torrent: torrent, port: port}) do
+    request_uri = Request.construct_request_model(peer_id, torrent, port) 
     |> Request.construct_request_params() 
     |> Request.construct_request(torrent)
 
